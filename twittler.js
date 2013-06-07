@@ -1,7 +1,20 @@
 var intervalId;
 
 $(document).ready(function(){
-  showTweets();
+  showTweets(); //initially load all users' tweets
+
+  // on home click show all tweets
+  $('#home').click( function(e){
+    e.preventDefault();
+    showTweets();
+  });
+
+  // on username click show that users tweets
+  var userClick = function(e){
+    e.preventDefault();
+    showTweets($(this).data('user'));
+  };
+  $('#tweets').delegate('.tweet a', 'click', userClick);
 
 });
 
