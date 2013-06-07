@@ -1,7 +1,12 @@
 var intervalId;
+var visitor;
 
 $(document).ready(function(){
   showTweets(); //initially load all users' tweets
+  //prompt for username and create empty array for tweets
+  visitor = prompt('What is your username?');
+  if (visitor === null) { visitor = 'guest'; }
+  streams.users[visitor] = [];
 
   // on home click show all tweets
   $('#home').click( function(e){
@@ -16,6 +21,26 @@ $(document).ready(function(){
   };
   $('#tweets').delegate('.tweet a', 'click', userClick);
 
+  //adding a new tweet
+  $('#newMessage').bind({
+    keypress: function(event) {
+      if (event.which === 13) {
+          event.preventDefault();
+          writeTweet($('#newMessage').val());
+          $('#newMessage').val('');
+      }
+    },
+    focus: function() {
+      if ($('#newMessage').val() === 'send new tweet...') {
+        $('#newMessage').val('');
+      }
+    },
+    blur: function() {
+      if ($('#newMessage').val() === '') {
+        $('#newMessage').val('send new tweet...');
+      }
+    }
+  });
 });
 
 var showTweets = function(username) {
